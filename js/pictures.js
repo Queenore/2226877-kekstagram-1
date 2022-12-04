@@ -1,6 +1,7 @@
 import {photos} from './data.js';
+import {openPictureModal} from './big-picture.js';
 
-const picturesListEvent = document.querySelector('.pictures');
+const picturesListElement = document.querySelector('.pictures');
 
 const pictureTemplate = document.querySelector('#picture')
   .content
@@ -9,19 +10,31 @@ const pictureTemplate = document.querySelector('#picture')
 const picturesFragment = document.createDocumentFragment();
 
 const appendPicture = (picture) => {
-  const {url, likes, comments} = picture;
+  const {id, url, likes, comments} = picture;
 
   const pictureElement = pictureTemplate.cloneNode(true);
   pictureElement.querySelector('.picture__img').src = url;
   pictureElement.querySelector('.picture__likes').textContent = likes;
   pictureElement.querySelector('.picture__comments').textContent = comments.length;
+  pictureElement.dataset.id = id;
+
+  pictureElement.addEventListener('click', (evt) => {
+    openPictureModal(picture);
+  });
 
   picturesFragment.appendChild(pictureElement);
 };
 
-const renderPictures = () => {
+export const renderPictures = () => {
   photos.forEach(appendPicture);
-  picturesListEvent.appendChild(picturesFragment);
-};
+  picturesListElement.appendChild(picturesFragment);
 
-export { renderPictures };
+  picturesListElement.addEventListener('click', (evt) => {
+    const pictureElement = evt.target.closest('.picture');
+    if (pictureElement) {
+      const clickedPicture = photos.find(({id}) => Number(pictureElement.dataset.id) === id);
+      openPictureModal(clickedPicture);
+    }
+  });
+
+};
