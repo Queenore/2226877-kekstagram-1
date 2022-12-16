@@ -18,7 +18,7 @@ const appendPicture = (picture) => {
   pictureElement.querySelector('.picture__comments').textContent = comments.length;
   pictureElement.dataset.id = id;
 
-  pictureElement.addEventListener('click', (evt) => {
+  pictureElement.addEventListener('click', () => {
     openPictureModal(picture);
   });
 
