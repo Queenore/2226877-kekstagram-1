@@ -1,7 +1,7 @@
-const photoUploadForm = document.querySelector('.img-upload__form');
-const scaleControlSmaller = photoUploadForm.querySelector('.scale__control--smaller');
-const scaleControlBigger = photoUploadForm.querySelector('.scale__control--bigger');
-const scaleControlValue = photoUploadForm.querySelector('.scale__control--value');
+const imageUploadForm = document.querySelector('.img-upload__form');
+const scaleControlSmaller = imageUploadForm.querySelector('.scale__control--smaller');
+const scaleControlBigger = imageUploadForm.querySelector('.scale__control--bigger');
+const scaleControlValue = imageUploadForm.querySelector('.scale__control--value');
 const imgUploadPreview = document.querySelector('.img-upload__preview');
 
 const changeSmallerBiggerScale = (SmallerUpperFlag) => { // false -> smaller, true -> bigger
