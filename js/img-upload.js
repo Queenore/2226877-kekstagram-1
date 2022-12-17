@@ -1,5 +1,6 @@
 import {isEscKey} from './util.js';
 import {changeImgScale} from './img-scale.js';
+import {enableImgEffects} from './img-effects.js';
 import {pristine} from './pristine-validator.js';
 
 const fileUploadButton = document.querySelector('#upload-file');
@@ -32,6 +33,7 @@ export const renderFileUpload = () => {
 
   fileUploadButton.addEventListener('change', () => {
     changeImgScale();
+    enableImgEffects();
     document.addEventListener('keydown', onEscKeydown);
     buttonCancelElement.addEventListener('click', closeOverlay, {once: true});
     document.body.classList.remove('modal-open');

@@ -1,5 +1,5 @@
 import {renderPictures} from './pictures.js';
-import {renderFileUpload} from './image-upload.js';
+import {renderFileUpload} from './img-upload.js';
 
 renderPictures();
 renderFileUpload();
