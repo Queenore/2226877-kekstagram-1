@@ -1,4 +1,5 @@
 import {isEscKey} from './util.js';
+import {changeImgScale} from './img-scale.js';
 
 const MAX_HASHTAGS_COUNT = 5;
 const MAX_HASHTAG_LENGTH = 20;
@@ -12,6 +13,7 @@ const textDescription = photoUploadForm.querySelector('.text__description');
 const buttonCancelElement = photoUploadForm.querySelector('.img-upload__cancel');
 
 const hashtagRegex = new RegExp('^#[0-9A-Za-zА-Яа-яЁё]{1,19}$');
+
 function isHashtagValid(element) {
   return hashtagRegex.test(element);
 }
@@ -83,7 +85,7 @@ const closeOverlay = () => {
 };
 
 const onEscKeydown = (evt) => {
-  if (isEscKey(evt.key) && evt.target !== textHashtags && evt.target !== textDescription){
+  if (isEscKey(evt.key) && evt.target !== textHashtags && evt.target !== textDescription) {
     evt.preventDefault();
     closeOverlay();
   }
@@ -92,15 +94,15 @@ const onEscKeydown = (evt) => {
 export const renderFileUpload = () => {
   photoUploadForm.addEventListener('submit', (evt) => {
     const isValid = pristine.validate();
-    if (!isValid){
+    if (!isValid) {
       evt.preventDefault();
     }
   });
 
-
   fileUploadButton.addEventListener('change', () => {
-    document.addEventListener('keydown',onEscKeydown);
-    buttonCancelElement.addEventListener('click',closeOverlay, {once:true});
+    changeImgScale();
+    document.addEventListener('keydown', onEscKeydown);
+    buttonCancelElement.addEventListener('click', closeOverlay, {once: true});
     document.body.classList.remove('modal-open');
     overlay.classList.remove('hidden');
   });
