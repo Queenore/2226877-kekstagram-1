@@ -82,7 +82,7 @@ const escListener = (evt) => {
 const errorElementListener = (evt) => {
   if (evt.target.className !== 'error__inner' && evt.target.className !== 'error__title') {
     removeErrorElement(errorElement);
-    document.body.removeEventListener('keydown', errorElementListener);
+    document.body.removeEventListener('click', errorElementListener);
   }
 };
 
