@@ -1,5 +1,6 @@
 import {renderPictures} from './pictures.js';
 import {renderFileUpload} from './img-upload.js';
+import {getData} from './api.js';
 
-renderPictures();
+getData(renderPictures);
 renderFileUpload();

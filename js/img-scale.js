@@ -23,6 +23,7 @@ const changeScaleBigger = () => {
 
 const changeImgScale = () => {
   scaleControlValue.value = '100%';
+  imgUploadPreview.style.transform = 'scale(1)';
   scaleControlSmaller.addEventListener('click', changeScaleSmaller);
   scaleControlBigger.addEventListener('click', changeScaleBigger);
 };
