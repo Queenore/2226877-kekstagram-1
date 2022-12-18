@@ -1,4 +1,4 @@
-import {EFFECT_OPTIONS} from './data.js';
+import {DEFAULT_OPTIONS, EFFECT_OPTIONS} from './data.js';
 
 const DEFAULT_EFFECT = 'none';
 
@@ -25,20 +25,6 @@ const updateEffect = (evt) => {
   effect = currentEffect;
 };
 
-const createSlider = () => {
-  noUiSlider.create(
-    sliderElement, {
-      range: {
-        min: 0,
-        max: 100
-      },
-      start: 100,
-      step: 1,
-      connect: 'lower',
-    }
-  );
-};
-
 const resetEffect = () => {
   imagePreview.classList.remove(`effects__preview--${effect}`);
   imagePreview.style.filter = DEFAULT_EFFECT;
@@ -49,7 +35,7 @@ const resetEffect = () => {
 export const enableImgEffects = () => {
   resetEffect();
   if (!sliderElement.classList.contains('noUi-target')) {
-    createSlider();
+    noUiSlider.create(sliderElement, DEFAULT_OPTIONS);
   }
   effectItems.forEach((item) => {
     item.addEventListener('change', updateEffect);
