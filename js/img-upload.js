@@ -3,6 +3,7 @@ import {changeImgScale} from './img-scale.js';
 import {enableImgEffects} from './img-effects.js';
 import {pristine} from './pristine-validator.js';
 import {sendData} from './api.js';
+import {onImgInputChange} from './picture-input.js';
 
 const fileUploadButton = document.querySelector('#upload-file');
 const overlay = document.querySelector('.img-upload__overlay');
@@ -17,6 +18,7 @@ const successTemplate = document.querySelector('#success');
 const submitFormElement = form.querySelector('.img-upload__submit');
 
 let isErrorMsgActive = false;
+let errorElement;
 
 const closeOverlay = () => {
   pristine.reset();
@@ -45,47 +47,54 @@ const onEscKeydown = (evt) => {
 const createSuccessBlock = () => {
   closeOverlay();
   submitFormElement.disabled = false;
-  const successCopy = successTemplate.cloneNode(true).content.querySelector('.success');
+  const successElement = successTemplate.cloneNode(true).content.querySelector('.success');
   document.addEventListener('keydown', (evt) => {
-    if (isEscKey(evt.key)) {
-      document.body.removeChild(successCopy);
+    if (isEscKey(evt.key) && document.body.contains(successElement)) {
+      document.body.removeChild(successElement);
     }
   });
-  successCopy.addEventListener(
+  successElement.addEventListener(
     'click',
     (evt) => {
       if (evt.target.className !== 'success__inner' && evt.target.className !== 'success__title') {
-        document.body.removeChild(successCopy);
+        document.body.removeChild(successElement);
       }
     });
-  document.body.appendChild(successCopy);
+  document.body.appendChild(successElement);
 };
 
-const removeErrorCopyElement = (errorCopy) => {
-  document.body.removeChild(errorCopy);
-  isErrorMsgActive = false;
-  showOverlay();
+
+const removeErrorElement = () => {
+  if (document.body.contains(errorElement)) {
+    document.body.removeChild(errorElement);
+    isErrorMsgActive = false;
+    showOverlay();
+  }
+};
+
+const escListener = (evt) => {
+  if (isEscKey(evt.key)) {
+    removeErrorElement(errorElement);
+    document.body.removeEventListener('keydown', escListener);
+  }
+};
+
+const errorElementListener = (evt) => {
+  if (evt.target.className !== 'error__inner' && evt.target.className !== 'error__title') {
+    removeErrorElement(errorElement);
+    document.body.removeEventListener('keydown', errorElementListener);
+  }
 };
 
 const createErrorBlock = (text) => {
   hideOverlay();
   isErrorMsgActive = true;
   submitFormElement.disabled = false;
-  const errorCopy = errorTemplate.cloneNode(true).content.querySelector('.error');
-  errorCopy.querySelector('.error__title').textContent = text;
-  document.addEventListener('keydown', (evt) => {
-    if (isEscKey(evt.key)) {
-      removeErrorCopyElement(errorCopy);
-    }
-  });
-  errorCopy.addEventListener(
-    'click',
-    (evt) => {
-      if (evt.target.className !== 'error__inner' && evt.target.className !== 'error__title') {
-        removeErrorCopyElement(errorCopy);
-      }
-    });
-  document.body.appendChild(errorCopy);
+  errorElement = errorTemplate.cloneNode(true).content.querySelector('.error');
+  errorElement.querySelector('.error__title').textContent = text;
+  document.addEventListener('keydown', escListener);
+  errorElement.addEventListener('click', errorElementListener);
+  document.body.appendChild(errorElement);
 };
 
 export const renderFileUpload = () => {
@@ -98,9 +107,10 @@ export const renderFileUpload = () => {
     }
   });
 
-  fileUploadButton.addEventListener('change', () => {
+  fileUploadButton.addEventListener('change', (evt) => {
     changeImgScale();
     enableImgEffects();
+    onImgInputChange(evt);
     document.addEventListener('keydown', onEscKeydown);
     buttonCancelElement.addEventListener('click', closeOverlay, {once: true});
     showOverlay();

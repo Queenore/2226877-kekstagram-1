@@ -12,6 +12,7 @@ let effect = DEFAULT_EFFECT;
 
 const updateEffect = (evt) => {
   const currentEffect = evt.target.value;
+  imagePreview.classList.value = 'img-upload__preview';
   imagePreview.classList.remove(`effects__preview--${effect}`);
   if (evt.target.value !== DEFAULT_EFFECT) {
     sliderElement.noUiSlider.updateOptions(EFFECT_OPTIONS[currentEffect].noui);
