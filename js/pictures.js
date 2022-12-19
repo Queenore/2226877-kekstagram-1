@@ -36,14 +36,14 @@ const renderPictures = (pictures, option) => {
     picture.removeEventListener('click', openPictureModalListener);
     picture.remove();
   });
-  if (option === 'filter-default') {
-    pictures.forEach(appendPicture);
-  } else if (option === 'filter-random') {
+  if (option === 'filter-random') {
     getRandomUniquePictures(pictures, 10).forEach(appendPicture);
-  } else {
+  } else if (option === 'filter-discussed') {
     Array.from(pictures).sort((a, b) =>
       b.comments.length - a.comments.length
     ).forEach(appendPicture);
+  } else {
+    pictures.forEach(appendPicture);
   }
   loadedPictures = pictures;
   picturesListElement.appendChild(picturesFragment);
